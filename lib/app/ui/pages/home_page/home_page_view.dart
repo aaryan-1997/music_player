@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
-import 'package:music_app/app/routes/app_pages.dart';
 import 'package:music_app/app/ui/pages/home_page/bottom_sheet_player.dart';
 import 'package:music_app/app/ui/pages/home_page/widgets/music_list_item.dart';
 import 'package:music_app/app/widgets/background/custom_background.dart';
@@ -49,18 +48,20 @@ class HomePage extends GetView<GetXPlayerController> {
                           onTap: () => Get.bottomSheet(
                             const BottomSheetPlayer(),
                             isScrollControlled: true,
-                            enterBottomSheetDuration: const Duration(milliseconds: 500),
-                            exitBottomSheetDuration: const Duration(milliseconds: 500),
+                            enterBottomSheetDuration:
+                                const Duration(milliseconds: 500),
+                            exitBottomSheetDuration:
+                                const Duration(milliseconds: 500),
                           ),
                           //onTap: () => Get.toNamed(AppRoutes.player),
-                          onTapPause:
-                              controller.playlistNotifier[index].title ==
-                                      controller.currentSongTitleNotifier.toString()
-                                  ? controller.playButtonNotifier ==
-                                          ButtonState.playing
-                                      ? controller.pause
-                                      : controller.play
-                                  : () {},
+                          onTapPause: controller
+                                      .playlistNotifier[index].title ==
+                                  controller.currentSongTitleNotifier.toString()
+                              ? controller.playButtonNotifier ==
+                                      ButtonState.playing
+                                  ? controller.pause
+                                  : controller.play
+                              : () {},
                           isCurrent: controller.playlistNotifier[index].title ==
                               controller.currentSongTitleNotifier,
                           isPlaying: controller.playButtonNotifier ==
@@ -130,7 +131,12 @@ class MiniPlayer extends GetView<GetXPlayerController> {
           ? const SizedBox.shrink()
           : GestureDetector(
               onTap: () {
-                Get.toNamed(AppRoutes.player);
+                Get.bottomSheet(
+                  const BottomSheetPlayer(),
+                  isScrollControlled: true,
+                  enterBottomSheetDuration: const Duration(milliseconds: 500),
+                  exitBottomSheetDuration: const Duration(milliseconds: 500),
+                );
               },
               child: Column(
                 children: const [
@@ -166,10 +172,11 @@ class MiniPlayerContainer extends GetView<GetXPlayerController> {
               margin: EdgeInsets.only(right: 10.w),
               child: Row(
                 children: [
-                  const MiniPreviousSongButton(),
-                  SizedBox(width: 10.w),
+                 // const MiniPreviousSongButton(),
+                  const BackwordSongButton(),
+                  SizedBox(width: 15.w),
                   const MiniPlayButton(),
-                  SizedBox(width: 10.w),
+                  SizedBox(width: 15.w),
                   controller.playButtonNotifier.value == ButtonState.paused
                       ? const MiniCloseSongButton()
                       : const MiniNextSongButton(),
@@ -363,17 +370,46 @@ class MiniCloseSongButton extends GetView<GetXPlayerController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: () {
-          controller.isCloseNotifier.value = true;
-        },
-        child: VectorAsset(
-          icon: 'ic_close',
-          size: 26.r,
-          color: (controller.isLastSongNotifier.value)
-              ? Colors.white54
-              : Colors.white,
+          onTap: () {
+            controller.isCloseNotifier.value = true;
+          },
+          child: Icon(
+            Icons.close,
+            color: (controller.isLastSongNotifier.value)
+                ? Colors.white54
+                : Colors.white,
+            size: 26.h,
+          )
+          // VectorAsset(
+          //   icon: 'ic_close',
+          //   size: 26.r,
+          //   color: (controller.isLastSongNotifier.value)
+          //       ? Colors.white54
+          //       : Colors.white,
+          // ),
+          ),
+    );
+  }
+}
+
+
+class BackwordSongButton extends GetView<GetXPlayerController> {
+  const BackwordSongButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => GestureDetector(
+        onTap: (controller.playlistNotifier.isNotEmpty) ? controller.backwordSeek10Sec :null ,
+        child: Transform.scale(
+          scaleX: -1,
+          child: const Icon(
+            Icons.forward_10_outlined,
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
 }
+
