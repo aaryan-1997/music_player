@@ -140,6 +140,20 @@ class GetXPlayerController extends GetxController {
   void pause() => _audioHandler.pause();
 
   void seek(Duration position) => _audioHandler.seek(position);
+  void forwordSeek10Sec() {
+    _audioHandler.seek(Duration(
+        seconds: _audioHandler.playbackState.value.position.inSeconds + 10));
+  }
+
+  void backwordSeek10Sec() {
+    if (_audioHandler.playbackState.value.position >
+        const Duration(seconds: 10)) {
+      _audioHandler.seek(Duration(
+          seconds: _audioHandler.playbackState.value.position.inSeconds - 10));
+    } else {
+      _audioHandler.seek(const Duration(seconds: 0));
+    }
+  }
 
   void previous() => _audioHandler.skipToPrevious();
 
@@ -195,8 +209,10 @@ class GetXPlayerController extends GetxController {
     _audioHandler.removeQueueItemAt(lastIndex);
   }
 
+  @override
   void dispose() {
     _audioHandler.customAction('dispose');
+    super.dispose();
   }
 
   void stop() {
@@ -217,9 +233,9 @@ class ProgressModel {
   });
 
   ProgressModel.zero()
-      : this.current = Duration.zero,
-        this.buffered = Duration.zero,
-        this.total = Duration.zero;
+      : current = Duration.zero,
+        buffered = Duration.zero,
+        total = Duration.zero;
 }
 
 enum RepeatState {

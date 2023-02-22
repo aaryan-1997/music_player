@@ -1,8 +1,11 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
 import 'package:music_app/app/routes/app_pages.dart';
+import 'package:music_app/app/ui/pages/home_page/bottom_sheet_player.dart';
 import 'package:music_app/app/ui/pages/home_page/widgets/music_list_item.dart';
 import 'package:music_app/app/widgets/background/custom_background.dart';
 import 'package:music_app/app/widgets/text_base.dart';
@@ -43,10 +46,16 @@ class HomePage extends GetView<GetXPlayerController> {
                               .toString(),
                           musicName: controller.playlistNotifier[index].title,
                           artistName: 'artist name',
-                          onTap: () => Get.toNamed(AppRoutes.player),
+                          onTap: () => Get.bottomSheet(
+                            const BottomSheetPlayer(),
+                            isScrollControlled: true,
+                            enterBottomSheetDuration: const Duration(milliseconds: 500),
+                            exitBottomSheetDuration: const Duration(milliseconds: 500),
+                          ),
+                          //onTap: () => Get.toNamed(AppRoutes.player),
                           onTapPause:
                               controller.playlistNotifier[index].title ==
-                                      controller.currentSongTitleNotifier
+                                      controller.currentSongTitleNotifier.toString()
                                   ? controller.playButtonNotifier ==
                                           ButtonState.playing
                                       ? controller.pause

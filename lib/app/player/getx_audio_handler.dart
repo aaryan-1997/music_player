@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -34,12 +35,14 @@ class GetXBaseAudioHandler extends BaseAudioHandler {
     _listenForCurrentSongIndexChanges();
     _listenForSequenceStateChanges();
   }
-
+  AudioPlayer get player => _player;
   Future<void> _loadEmptyPlaylist() async {
     try {
       await _player.setAudioSource(_playlist);
     } catch (e) {
-      print("Error: $e");
+      if (kDebugMode) {
+        print("Error: $e");
+      }
     }
   }
 
