@@ -24,7 +24,7 @@ class HomePage extends GetView<GetXPlayerController> {
           const Positioned.fill(child: CustomBackground()),
           Positioned.fill(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.r),
+              padding: EdgeInsets.symmetric(horizontal: 5.r),
               child: NestedScrollView(
                 headerSliverBuilder: (context, value) {
                   return [
@@ -32,45 +32,116 @@ class HomePage extends GetView<GetXPlayerController> {
                     SliverToBoxAdapter(child: shuffleButton(() {})),
                   ];
                 },
-                body: Obx(
-                  () => ListView.builder(
-                    padding: EdgeInsets.only(bottom: 60.r),
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: controller.playlistNotifier.length,
-                    itemBuilder: (context, index) => Obx(
-                      () => GestureDetector(
-                        onTap: () => controller.play,
-                        child: MusicListItem(
-                          image: controller.playlistNotifier[index].artUri
-                              .toString(),
-                          musicName: controller.playlistNotifier[index].title,
-                          artistName: 'artist name',
-                          onTap: () => Get.bottomSheet(
-                            const BottomSheetPlayer(),
-                            isScrollControlled: true,
-                            enterBottomSheetDuration:
-                                const Duration(milliseconds: 500),
-                            exitBottomSheetDuration:
-                                const Duration(milliseconds: 500),
-                          ),
-                          //onTap: () => Get.toNamed(AppRoutes.player),
-                          onTapPause: controller
-                                      .playlistNotifier[index].title ==
-                                  controller.currentSongTitleNotifier.toString()
-                              ? controller.playButtonNotifier ==
-                                      ButtonState.playing
-                                  ? controller.pause
-                                  : controller.play
-                              : () {},
-                          isCurrent: controller.playlistNotifier[index].title ==
-                              controller.currentSongTitleNotifier,
-                          isPlaying: controller.playButtonNotifier ==
-                              ButtonState.playing,
+                body: Obx(() => Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 150.h,
+                          child: Obx(() {
+                            return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.playlistNotifier.length,
+                                itemBuilder: (context, index) {
+                                  return Obx(() {
+                                    return InkWell(
+                                      onTap: controller.play,
+                                      child: Container(
+                                        height: 150.h,
+                                        width: 150.w,
+                                        margin: EdgeInsets.only(
+                                            left: 5.w, right: 5.w),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15.r),
+                                          border: Border.all(
+                                              color: Colors.black54,
+                                              width: 2.w),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                              controller.playlistNotifier[index]
+                                                  .artUri
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ),
+                                        child: Align(
+                                          child: VectorAsset(
+                                            icon: controller.playButtonNotifier
+                                                        .value ==
+                                                    ButtonState.playing
+                                                ? 'ic_pause'
+                                                : 'ic_play',
+                                            size: 30.r,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                });
+                          }),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
+                        SizedBox(height: 20.h),
+                        TextBase(
+                          "Playlist",
+                          textAlign: TextAlign.left,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        SizedBox(height: 20.h),
+                        Expanded(
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(
+                                bottom: 60.r, left: 10.w, right: 10.w),
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.playlistNotifier.length,
+                            itemBuilder: (context, index) => Obx(
+                              () => InkWell(
+                                onTap: () => controller.play,
+                                child: MusicListItem(
+                                  image: controller
+                                      .playlistNotifier[index].artUri
+                                      .toString(),
+                                  musicName:
+                                      controller.playlistNotifier[index].title,
+                                  artistName: 'artist name',
+                                  onTap: () => Get.bottomSheet(
+                                    const BottomSheetPlayer(),
+                                    isScrollControlled: true,
+                                    enterBottomSheetDuration:
+                                        const Duration(milliseconds: 500),
+                                    exitBottomSheetDuration:
+                                        const Duration(milliseconds: 500),
+                                  ),
+                                  //onTap: () => Get.toNamed(AppRoutes.player),
+                                  onTapPause: controller
+                                              .playlistNotifier[index].title ==
+                                          controller.currentSongTitleNotifier
+                                              .toString()
+                                      ? controller.playButtonNotifier ==
+                                              ButtonState.playing
+                                          ? controller.pause
+                                          : controller.play
+                                      : () {},
+                                  isCurrent: controller
+                                              .playlistNotifier[index].title ==
+                                          controller.currentSongTitleNotifier
+                                              .toString()
+                                      ? true
+                                      : false,
+                                  isPlaying: controller.playButtonNotifier ==
+                                          ButtonState.playing
+                                      ? true
+                                      : false,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
               ),
             ),
           ),
@@ -172,7 +243,7 @@ class MiniPlayerContainer extends GetView<GetXPlayerController> {
               margin: EdgeInsets.only(right: 10.w),
               child: Row(
                 children: [
-                 // const MiniPreviousSongButton(),
+                  // const MiniPreviousSongButton(),
                   const BackwordSongButton(),
                   SizedBox(width: 15.w),
                   const MiniPlayButton(),
@@ -392,7 +463,6 @@ class MiniCloseSongButton extends GetView<GetXPlayerController> {
   }
 }
 
-
 class BackwordSongButton extends GetView<GetXPlayerController> {
   const BackwordSongButton({Key? key}) : super(key: key);
 
@@ -400,7 +470,9 @@ class BackwordSongButton extends GetView<GetXPlayerController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: (controller.playlistNotifier.isNotEmpty) ? controller.backwordSeek10Sec :null ,
+        onTap: (controller.playlistNotifier.isNotEmpty)
+            ? controller.backwordSeek10Sec
+            : null,
         child: Transform.scale(
           scaleX: -1,
           child: const Icon(
@@ -412,4 +484,3 @@ class BackwordSongButton extends GetView<GetXPlayerController> {
     );
   }
 }
-
