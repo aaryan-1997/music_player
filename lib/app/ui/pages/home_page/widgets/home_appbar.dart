@@ -22,15 +22,19 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
                   'Music Player',
                   fontSize: 26.sp,
                   fontWeight: FontWeight.bold,
+                  leftPading: 10.w
                 ),
               ),
-              CircleAppbarIcon(
-                onTap: () {
-                  debugPrint('TODO');
-                },
-                icon: 'ic_search',
-                heroTag: 'appbar_icon',
-                iconSize: 20.r,
+              Container(
+                padding: EdgeInsets.only(right: 10.w),
+                child: CircleAppbarIcon(
+                  onTap: () {
+                    debugPrint('TODO');
+                  },
+                  icon: 'ic_search',
+                  heroTag: 'appbar_icon',
+                  iconSize: 20.r,
+                ),
               ),
             ],
           )),

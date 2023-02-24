@@ -8,6 +8,8 @@ Widget TextBase(
   String text, {
   double? fontSize,
   double? height,
+  double leftPading = 0,
+  double rightPading = 0,
   FontWeight fontWeight = FontWeight.normal,
   Color color = ColorsBase.importantText,
   TextAlign textAlign = TextAlign.left,
@@ -17,19 +19,22 @@ Widget TextBase(
   TextOverflow overflow = TextOverflow.clip,
   TextDecoration decoration = TextDecoration.none,
 }) {
-  return Text(
-    text,
-    style: TextStyle(
-        fontSize: fontSize ?? 16.sp,
-        fontWeight: fontWeight,
-        height: height,
-        color: color,
-        fontFamily: Fonts.Montserrat,
-        decoration: decoration),
-    textDirection: textDirection,
-    textAlign: textAlign,
-    maxLines: maxLines,
-    softWrap: softWrap,
-    overflow: overflow,
+  return Container(
+    padding: EdgeInsets.only(left: leftPading,right: rightPading),
+    child: Text(
+      text,
+      style: TextStyle(
+          fontSize: fontSize ?? 16.sp,
+          fontWeight: fontWeight,
+          height: height,
+          color: color,
+          fontFamily: Fonts.Montserrat,
+          decoration: decoration),
+      textDirection: textDirection,
+      textAlign: textAlign,
+      maxLines: maxLines,
+      softWrap: softWrap,
+      overflow: overflow,
+    ),
   );
 }

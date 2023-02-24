@@ -4,8 +4,8 @@ import 'package:music_app/app/ui/theme/colors.dart';
 import 'package:music_app/app/widgets/background/circle_blur_painter.dart';
 
 class CustomBackground extends StatelessWidget {
-  const CustomBackground({Key? key}) : super(key: key);
-
+  const CustomBackground({Key? key, required this.child}) : super(key: key);
+  final Widget child;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,9 +17,9 @@ class CustomBackground extends StatelessWidget {
             left: 30.r,
             child: CustomPaint(
               foregroundPainter: CircleBlurPainter(
-                  circleWidth: 150.r,
-                  blurSigma: 100.r,
-                  circleColor: ColorsBase.accent.withOpacity(0.3),
+                circleWidth: 150.r,
+                blurSigma: 100.r,
+                circleColor: ColorsBase.accent.withOpacity(0.3),
               ),
             ),
           ),
@@ -34,6 +34,8 @@ class CustomBackground extends StatelessWidget {
               ),
             ),
           ),
+          //
+          child
         ],
       ),
     );

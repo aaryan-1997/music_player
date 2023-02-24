@@ -13,48 +13,50 @@ class PlayerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const Positioned.fill(child: CustomBackground()),
-          Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.r),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const PlayerAppbar(),
-                  SizedBox(height: 20.h),
-                  const ArtImage(),
-                  SizedBox(height: 34.h),
-                  const ArtistAndSongName(),
-                  const Spacer(flex: 2),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 68.w),
-                    child: const CustomSlider(),
-                  ),
-                  const Spacer(flex: 1),
-                  // player controller buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const RepeatButton(),
-                      SizedBox(width: 10.r),
-                      const PreviousSongButton(),
-                      SizedBox(width: 10.r),
-                      const PlayButton(),
-                      SizedBox(width: 10.r),
-                      const NextSongButton(),
-                      SizedBox(width: 10.r),
-                      const ShuffleButton(),
-                    ],
-                  ),
-                  const Spacer(flex: 2),
-                ],
+    return CustomBackground(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            //const Positioned.fill(child: CustomBackground()),
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const PlayerAppbar(),
+                    SizedBox(height: 20.h),
+                    const ArtImage(),
+                    SizedBox(height: 34.h),
+                    const ArtistAndSongName(),
+                    const Spacer(flex: 2),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 68.w),
+                      child: const CustomSlider(),
+                    ),
+                    const Spacer(flex: 1),
+                    // player controller buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const RepeatButton(),
+                        SizedBox(width: 10.r),
+                        const PreviousSongButton(),
+                        SizedBox(width: 10.r),
+                        const PlayButton(),
+                        SizedBox(width: 10.r),
+                        const NextSongButton(),
+                        SizedBox(width: 10.r),
+                        const ShuffleButton(),
+                      ],
+                    ),
+                    const Spacer(flex: 2),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

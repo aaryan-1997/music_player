@@ -15,7 +15,7 @@ class CustomSlider extends GetView<GetXPlayerController> {
         buffered: controller.progressNotifier.value.buffered,
         total: controller.progressNotifier.value.total,
         onSeek: controller.seek,
-        barHeight: 4,
+        barHeight: 3,
         barCapShape: BarCapShape.round,
         baseBarColor: Colors.white38,
         bufferedBarColor: Colors.white12,
@@ -27,8 +27,8 @@ class CustomSlider extends GetView<GetXPlayerController> {
           color: Colors.white38,
         ),
         timeLabelPadding: 10.0,
-        thumbRadius: 8,
-        thumbGlowRadius: 16,
+        thumbRadius: 4,
+        thumbGlowRadius: 10,
       ),
     );
   }

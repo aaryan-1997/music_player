@@ -14,49 +14,51 @@ class BottomSheetPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const Positioned.fill(child: CustomBackground()),
-          Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.r),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const BottomSheetAppbar(), //
-                  SizedBox(height: 20.h),
-                  const ArtImage(),
-                  //SizedBox(height: 5.h),
-                  const ArtistAndSongName(),
-                  SizedBox(height: 20.h),
-                  const CustomSlider(),
-                  //const Spacer(flex: 1),
-                  // player controller buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      //const RepeatButton(),
-                      // SizedBox(width: 10.r),
-                       const PreviousSongButton(),
-                      SizedBox(width: 10.r),
-                     const BackwordSongButton(),
-                      SizedBox(width: 10.r),
-                      const PlayButton(),
-                      SizedBox(width: 10.r),
-                      const ForwordSongButton(),
-                      SizedBox(width: 10.r),
-                      const NextSongButton(),
-                      //SizedBox(width: 10.r),
-                      //const ShuffleButton(),
-                    ],
-                  ),
-                  const Spacer(flex: 2),
-                ],
+    return CustomBackground(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            //const Positioned.fill(child: CustomBackground()),
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const BottomSheetAppbar(), //
+                    SizedBox(height: 20.h),
+                    const ArtImage(),
+                    //SizedBox(height: 5.h),
+                    const ArtistAndSongName(),
+                    SizedBox(height: 20.h),
+                    const CustomSlider(),
+                    //const Spacer(flex: 1),
+                    // player controller buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //const RepeatButton(),
+                        // SizedBox(width: 10.r),
+                         const PreviousSongButton(),
+                        SizedBox(width: 10.r),
+                       const BackwordSongButton(),
+                        SizedBox(width: 10.r),
+                        const PlayButton(),
+                        SizedBox(width: 10.r),
+                        const ForwordSongButton(),
+                        SizedBox(width: 10.r),
+                        const NextSongButton(),
+                        //SizedBox(width: 10.r),
+                        //const ShuffleButton(),
+                      ],
+                    ),
+                    const Spacer(flex: 2),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
