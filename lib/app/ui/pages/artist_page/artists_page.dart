@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:music_app/app/widgets/background/custom_background.dart';
 
 class ArtistsPage extends StatefulWidget {
@@ -12,25 +10,31 @@ class ArtistsPage extends StatefulWidget {
 }
 
 class _ArtistsPageState extends State<ArtistsPage> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   double height = 200;
   bool showButton = false;
   @override
   void initState() {
-    _scrollController.addListener(() {
-       log("${_scrollController.position.maxScrollExtent}");
-      if (_scrollController.position.maxScrollExtent <= height) {
-       
-        setState(() {
-          showButton = true;
-        });
-      } else {
-        setState(() {
-          showButton = true;
-        });
-      }
-    });
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels >= height) {
+      setState(() {
+        showButton = true;
+      });
+    } else {
+      setState(() {
+        showButton = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,9 +52,11 @@ class _ArtistsPageState extends State<ArtistsPage> {
                   pinned: true,
                   expandedHeight: height,
                   flexibleSpace: FlexibleSpaceBar(
+                    collapseMode: CollapseMode.pin,
                     background: Image.network(
                       'https://static.toiimg.com/photo/msid-85678940/85678940.jpg',
                       fit: BoxFit.cover,
+                      height: height,
                     ),
                   ),
                   actions: [

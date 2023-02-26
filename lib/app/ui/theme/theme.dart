@@ -11,7 +11,7 @@ abstract class AppTheme {
     return ThemeData(
       fontFamily: Fonts.Montserrat,
       appBarTheme: const AppBarTheme(
-        backgroundColor: ColorsBase.background,
+        backgroundColor: AppColor.backgroundColor,
         elevation: 0,
         iconTheme: IconThemeData(
           color: Colors.white70,
@@ -21,10 +21,10 @@ abstract class AppTheme {
       canvasColor: Colors.black,
       colorScheme: ColorScheme.fromSwatch().copyWith(
         brightness: Brightness.dark,
-        background: ColorsBase.background,
-        primary: ColorsBase.primary,
-        secondary: ColorsBase.accent,
-        error: ColorsBase.error,
+        background: AppColor.backgroundColor,
+        primary: AppColor.primaryColor,
+        secondary: AppColor.accentColor,
+        error: AppColor.error,
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       navigationBarTheme: const NavigationBarThemeData(

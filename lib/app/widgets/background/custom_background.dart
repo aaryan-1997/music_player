@@ -9,7 +9,7 @@ class CustomBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorsBase.background,
+      color: AppColor.backgroundColor,
       child: Stack(
         children: [
           Positioned(
@@ -19,7 +19,7 @@ class CustomBackground extends StatelessWidget {
               foregroundPainter: CircleBlurPainter(
                 circleWidth: 150.r,
                 blurSigma: 100.r,
-                circleColor: ColorsBase.accent.withOpacity(0.3),
+                circleColor: AppColor.accentColor.withOpacity(0.3),
               ),
             ),
           ),
@@ -30,7 +30,7 @@ class CustomBackground extends StatelessWidget {
               foregroundPainter: CircleBlurPainter(
                 circleWidth: 150.r,
                 blurSigma: 100.r,
-                circleColor: ColorsBase.primary.withOpacity(0.3),
+                circleColor: AppColor.primaryColor.withOpacity(0.3),
               ),
             ),
           ),

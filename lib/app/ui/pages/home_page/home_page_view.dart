@@ -12,7 +12,6 @@ import 'package:music_app/app/widgets/background/custom_background.dart';
 import 'package:music_app/app/widgets/text_base.dart';
 import 'package:music_app/app/widgets/vector_asset.dart';
 
-import '../../theme/colors.dart';
 import '../player_page/widgets/custom_slider.dart';
 import 'widgets/home_appbar.dart';
 
@@ -24,143 +23,121 @@ class HomePage extends GetView<GetXPlayerController> {
     return CustomBackground(
       child: SafeArea(
         child: Scaffold(
-          body: Obx(() => Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const HomeAppbar(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextBase(
-                                "Artists",
-                                textAlign: TextAlign.left,
-                                fontWeight: FontWeight.bold,
-                                leftPading: 10.w,
-                              ),
-                              TextBase(
-                                "View All",
-                                textAlign: TextAlign.left,
-                                fontWeight: FontWeight.bold,
-                                rightPading: 10.w,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          const TopArtists(),
-                          SizedBox(height: 25.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextBase(
-                                "Trending Songs",
-                                textAlign: TextAlign.left,
-                                fontWeight: FontWeight.bold,
-                                leftPading: 10.w,
-                              ),
-                              TextBase(
-                                "View All",
-                                textAlign: TextAlign.left,
-                                fontWeight: FontWeight.bold,
-                                rightPading: 10.w,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 15.h),
-                          const TopPlayList(),
-                          SizedBox(height: 20.h),
-                          TextBase(
-                            "Playlist",
-                            textAlign: TextAlign.left,
-                            fontWeight: FontWeight.bold,
-                            leftPading: 10.w,
-                          ),
-                          SizedBox(height: 20.h),
-                          Flexible(
-                            child: ListView.builder(
-                              padding: EdgeInsets.only(
-                                  bottom: 10.r, left: 10.w, right: 10.w),
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.playlistNotifier.length,
-                              itemBuilder: (context, index) => Obx(
-                                () => InkWell(
-                                  onTap: () => controller.play,
-                                  child: MusicListItem(
-                                    image: controller
-                                        .playlistNotifier[index].artUri
-                                        .toString(),
-                                    musicName: controller
-                                        .playlistNotifier[index].title,
-                                    artistName: 'artist name',
-                                    onTap: () => Get.bottomSheet(
-                                      const BottomSheetPlayer(),
-                                      isScrollControlled: true,
-                                      enterBottomSheetDuration:
-                                          const Duration(milliseconds: 500),
-                                      exitBottomSheetDuration:
-                                          const Duration(milliseconds: 500),
-                                    ),
-                                    //onTap: () => Get.toNamed(AppRoutes.player),
-                                    onTapPause: controller
-                                                .playlistNotifier[index]
-                                                .title ==
-                                            controller.currentSongTitleNotifier
-                                                .toString()
-                                        ? controller.playButtonNotifier ==
-                                                ButtonState.playing
-                                            ? controller.pause
-                                            : controller.play
-                                        : () {},
-                                    isCurrent: controller
-                                                .playlistNotifier[index]
-                                                .title ==
-                                            controller.currentSongTitleNotifier
-                                                .toString()
-                                        ? true
-                                        : false,
-                                    isPlaying: controller.playButtonNotifier ==
-                                            ButtonState.playing
-                                        ? true
-                                        : false,
+          body: Obx(
+            () => Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const HomeAppbar(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextBase(
+                              "Artists",
+                              textAlign: TextAlign.left,
+                              fontWeight: FontWeight.bold,
+                              leftPading: 10.w,
+                            ),
+                            TextBase(
+                              "View All",
+                              textAlign: TextAlign.left,
+                              fontWeight: FontWeight.bold,
+                              rightPading: 10.w,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        const TopArtists(),
+                        SizedBox(height: 25.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextBase(
+                              "Trending Songs",
+                              textAlign: TextAlign.left,
+                              fontWeight: FontWeight.bold,
+                              leftPading: 10.w,
+                            ),
+                            TextBase(
+                              "View All",
+                              textAlign: TextAlign.left,
+                              fontWeight: FontWeight.bold,
+                              rightPading: 10.w,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15.h),
+                        const TopPlayList(),
+                        SizedBox(height: 20.h),
+                        TextBase(
+                          "Playlist",
+                          textAlign: TextAlign.left,
+                          fontWeight: FontWeight.bold,
+                          leftPading: 10.w,
+                        ),
+                        SizedBox(height: 20.h),
+                        Flexible(
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(
+                                bottom: 10.r, left: 10.w, right: 10.w),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.playlistNotifier.length,
+                            itemBuilder: (context, index) => Obx(
+                              () => InkWell(
+                                onTap: () => controller.play,
+                                child: MusicListItem(
+                                  image: controller
+                                      .playlistNotifier[index].artUri
+                                      .toString(),
+                                  musicName:
+                                      controller.playlistNotifier[index].title,
+                                  artistName: 'artist name',
+                                  onTap: () => Get.bottomSheet(
+                                    const BottomSheetPlayer(),
+                                    isScrollControlled: true,
+                                    enterBottomSheetDuration:
+                                        const Duration(milliseconds: 500),
+                                    exitBottomSheetDuration:
+                                        const Duration(milliseconds: 500),
                                   ),
+                                  //onTap: () => Get.toNamed(AppRoutes.player),
+                                  onTapPause: controller
+                                              .playlistNotifier[index].title ==
+                                          controller.currentSongTitleNotifier
+                                              .toString()
+                                      ? controller.playButtonNotifier ==
+                                              ButtonState.playing
+                                          ? controller.pause
+                                          : controller.play
+                                      : () {},
+                                  isCurrent: controller
+                                              .playlistNotifier[index].title ==
+                                          controller.currentSongTitleNotifier
+                                              .toString()
+                                      ? true
+                                      : false,
+                                  isPlaying: controller.playButtonNotifier ==
+                                          ButtonState.playing
+                                      ? true
+                                      : false,
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              )),
-          bottomNavigationBar: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const MiniPlayer(),
-              BottomNavigationBar(
-                backgroundColor: ColorsBase.background,
-                selectedItemColor: Colors.white,
-                unselectedItemColor: Colors.white54,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined),
-                    label: "",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.library_books),
-                    label: "",
-                  ),
-                ],
-              ),
-            ],
+                ),
+                const MiniPlayer(),
+              ],
+            ),
           ),
         ),
       ),
@@ -498,7 +475,12 @@ class TopPlayList extends GetView<GetXPlayerController> {
             itemBuilder: (context, index) {
               return Obx(() {
                 return InkWell(
-                  onTap: controller.play,
+                  onTap: () => Get.bottomSheet(
+                    const BottomSheetPlayer(),
+                    isScrollControlled: true,
+                    enterBottomSheetDuration: const Duration(milliseconds: 500),
+                    exitBottomSheetDuration: const Duration(milliseconds: 500),
+                  ),
                   child: Container(
                     height: 110.h,
                     width: 120.w,
@@ -515,10 +497,7 @@ class TopPlayList extends GetView<GetXPlayerController> {
                     ),
                     child: Align(
                       child: VectorAsset(
-                        icon: controller.playButtonNotifier.value ==
-                                ButtonState.playing
-                            ? 'ic_pause'
-                            : 'ic_play',
+                        icon: 'ic_play',
                         size: 30.r,
                         color: Colors.white,
                       ),

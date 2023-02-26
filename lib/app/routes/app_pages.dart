@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:music_app/app/main_page.dart';
 import 'package:music_app/app/ui/pages/home_page/home_page_view.dart';
 import 'package:music_app/app/ui/pages/player_page/player_page_view.dart';
 
@@ -10,9 +11,13 @@ class AppPages {
   AppPages._();
 
   // ignore: constant_identifier_names
-  static const INITIAL = AppRoutes.home;
+  static const INITIAL = AppRoutes.mainPage;
 
   static final routes = [
+    GetPage(
+      name: _Paths.mainPage,
+      page: () => const MainPage(),
+    ),
     GetPage(
       name: _Paths.homePage,
       page: () => const HomePage(),

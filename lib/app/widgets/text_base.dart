@@ -11,7 +11,7 @@ Widget TextBase(
   double leftPading = 0,
   double rightPading = 0,
   FontWeight fontWeight = FontWeight.normal,
-  Color color = ColorsBase.importantText,
+  Color color = AppColor.whiteTextColor,
   TextAlign textAlign = TextAlign.left,
   TextDirection textDirection = TextDirection.ltr,
   int? maxLines,
