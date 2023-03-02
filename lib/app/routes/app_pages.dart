@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:music_app/app/main_page.dart';
+import 'package:music_app/app/ui/pages/home_page/bottom_sheet_player.dart';
 import 'package:music_app/app/ui/pages/home_page/home_page_view.dart';
 import 'package:music_app/app/ui/pages/player_page/player_page_view.dart';
 
@@ -25,6 +26,12 @@ class AppPages {
     GetPage(
       name: _Paths.playerPage,
       page: () => const PlayerPage(),
+    ),
+    GetPage(
+      name: _Paths.bottomPlayer,
+      page: () => const BottomSheetPlayer(),
+        transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 400),
     ),
     GetPage(
       name: _Paths.artistPage,

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music_app/app/ui/pages/home_page/home_page_view.dart';
 import 'package:music_app/app/ui/pages/playlist/playlist_page.dart';
 import 'package:music_app/app/ui/pages/profile/profile_page.dart';
-import 'package:music_app/app/ui/pages/radio/radio_page.dart';
 import 'package:music_app/app/widgets/custom_nav_bar.dart';
 
 import 'ui/theme/colors.dart';
@@ -38,7 +36,7 @@ class _MainPageState extends State<MainPage> {
     super.setState(fn);
   }
 
-  final _inactiveColor = AppColor.primaryColor;
+  final _inactiveColor = AppColor.orangeColor;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -68,6 +66,7 @@ class _MainPageState extends State<MainPage> {
       itemCornerRadius: 24,
       curve: Curves.easeIn,
       animationDuration: const Duration(milliseconds: 400),
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       onItemSelected: (index) => setState(() {
         _currentIndex = index;
         _pageController.animateToPage(_currentIndex,
@@ -75,28 +74,22 @@ class _MainPageState extends State<MainPage> {
       }),
       items: <BottomNavyBarItem>[
         BottomNavyBarItem(
-          icon: const Icon(FontAwesome.home),
+          icon:
+              NavBarIcon(imgUrl: _currentIndex == 0 ? "home.png" : "home_white.png"),
           title: const Text("Home"),
           activeColor: AppColor.whiteColor,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.audiotrack),
-          title: const Text("Audio"),
+          icon: NavBarIcon(imgUrl: _currentIndex == 1 ? "search.png" : "search_white.png"),
+          title: const Text("Search"),
           activeColor: AppColor.whiteColor,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.my_library_music),
-          title: const Text("Library"),
-          activeColor: AppColor.whiteColor,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
-        ),
-        BottomNavyBarItem(
-          icon: const Icon(Icons.person),
+          icon: NavBarIcon(imgUrl: _currentIndex == 2 ? "user.png" : "user_white.png"),
           title: const Text("Profile"),
           activeColor: AppColor.whiteColor,
           inactiveColor: _inactiveColor,
@@ -158,18 +151,31 @@ class _MainPageState extends State<MainPage> {
 
   //====Body===
   Widget getBody() {
-    List<Widget> pages = const [
-      HomePage(),
-      RadioPage(),
-      PlaylistPage(),
-      ProfilePage()
-    ];
+    List<Widget> pages = const [HomePage(), PlaylistPage(), ProfilePage()];
     return PageView(
       pageSnapping: false,
       physics: const NeverScrollableScrollPhysics(),
       onPageChanged: (value) => setState(() => _currentIndex = value),
       controller: _pageController,
       children: pages,
+    );
+  }
+}
+
+class NavBarIcon extends StatelessWidget {
+  const NavBarIcon({
+    Key? key,  this.height=24,  this.width=24, required this.imgUrl,
+  }) : super(key: key);
+  final double height;
+  final double width;
+  final String imgUrl;
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      "assets/icon/$imgUrl",
+      height: height,
+      width: width,
+      errorBuilder: (context, error, stackTrace) =>const Icon(Icons.home_outlined) ,
     );
   }
 }

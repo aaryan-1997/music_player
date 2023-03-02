@@ -98,15 +98,16 @@ class HomePage extends GetView<GetXPlayerController> {
                                   musicName:
                                       controller.playlistNotifier[index].title,
                                   artistName: 'artist name',
-                                  onTap: () => Get.bottomSheet(
-                                    const BottomSheetPlayer(),
-                                    isScrollControlled: true,
-                                    enterBottomSheetDuration:
-                                        const Duration(milliseconds: 500),
-                                    exitBottomSheetDuration:
-                                        const Duration(milliseconds: 500),
-                                  ),
+                                  // onTap: () => Get.bottomSheet(
+                                  //   const BottomSheetPlayer(),
+                                  //   isScrollControlled: true,
+                                  //   enterBottomSheetDuration:
+                                  //       const Duration(milliseconds: 500),
+                                  //   exitBottomSheetDuration:
+                                  //       const Duration(milliseconds: 500),
+                                  // ),
                                   //onTap: () => Get.toNamed(AppRoutes.player),
+                                  onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
                                   onTapPause: controller
                                               .playlistNotifier[index].title ==
                                           controller.currentSongTitleNotifier
@@ -475,12 +476,13 @@ class TopPlayList extends GetView<GetXPlayerController> {
             itemBuilder: (context, index) {
               return Obx(() {
                 return InkWell(
-                  onTap: () => Get.bottomSheet(
-                    const BottomSheetPlayer(),
-                    isScrollControlled: true,
-                    enterBottomSheetDuration: const Duration(milliseconds: 500),
-                    exitBottomSheetDuration: const Duration(milliseconds: 500),
-                  ),
+                  // onTap: () => Get.bottomSheet(
+                  //   const BottomSheetPlayer(),
+                  //   isScrollControlled: true,
+                  //   enterBottomSheetDuration: const Duration(milliseconds: 500),
+                  //   exitBottomSheetDuration: const Duration(milliseconds: 500),
+                  // ),
+                 onTap: () =>  Get.toNamed(AppRoutes.bottomPlayer),
                   child: Container(
                     height: 110.h,
                     width: 120.w,

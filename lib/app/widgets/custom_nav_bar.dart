@@ -48,7 +48,7 @@ class CustomNavigationBar extends StatelessWidget {
         child: Container(
           width: double.infinity,
           height: containerHeight,
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
           child: Row(
             mainAxisAlignment: mainAxisAlignment,
             children: items.map((item) {
@@ -99,52 +99,54 @@ class _ItemWidget extends StatelessWidget {
       container: true,
       selected: isSelected,
       child: AnimatedContainer(
-        width: isSelected ? 130 : 50,
+        //width: isSelected ? 130 : 50,
         height: double.maxFinite,
         duration: animationDuration,
         curve: curve,
         decoration: BoxDecoration(
-          color: isSelected ? item.activeColor : backgroundColor,
+          // color: isSelected ? item.activeColor : backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const NeverScrollableScrollPhysics(),
           child: Container(
-            width: isSelected ? 130 : 50,
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
+            // width: 50, //isSelected ? 130 :
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Column(
+              // mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: IconTheme(
-                    data: IconThemeData(
-                      size: iconSize,
-                      color: isSelected
-                          ? item.inactiveColor ?? item.activeColor
-                          : item.activeColor.withOpacity(1),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: IconTheme(
+                      data: IconThemeData(
+                        size: iconSize,
+                        color: isSelected
+                            ? item.inactiveColor ?? item.activeColor
+                            : item.activeColor.withOpacity(1),
+                      ),
+                      child: item.icon,
                     ),
-                    child: item.icon,
                   ),
                 ),
-                if (isSelected)
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: DefaultTextStyle.merge(
-                        style: TextStyle(
-                          color: item.inactiveColor ?? item.activeColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                        textAlign: item.textAlign,
-                        child: item.title,
-                      ),
-                    ),
-                  ),
+                // Expanded(
+                //   child: Container(
+                //     padding: const EdgeInsets.symmetric(horizontal: 4),
+                //     child: DefaultTextStyle.merge(
+                //       style: TextStyle(
+                //         color:
+                //             isSelected ? item.inactiveColor : item.activeColor,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //       maxLines: 1,
+                //       textAlign: item.textAlign,
+                //       child: item.title,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
