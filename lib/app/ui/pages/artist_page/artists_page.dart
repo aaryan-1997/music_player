@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:music_app/app/widgets/background/custom_background.dart';
+
+import '../../../config/widgets/background/custom_background.dart';
 
 class ArtistsPage extends StatefulWidget {
   const ArtistsPage({Key? key}) : super(key: key);

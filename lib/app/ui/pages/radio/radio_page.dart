@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/text_base.dart';
+import '../../../config/widgets/text_base.dart';
+
 
 class RadioPage extends StatefulWidget {
   const RadioPage({Key? key}) : super(key: key);

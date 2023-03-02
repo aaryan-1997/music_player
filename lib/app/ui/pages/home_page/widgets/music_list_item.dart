@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:music_app/app/widgets/text_base.dart';
-import 'package:music_app/app/widgets/vector_asset.dart';
+
+import '../../../../config/widgets/text_base.dart';
+import '../../../../config/widgets/vector_asset.dart';
+
+
 
 class MusicListItem extends StatelessWidget {
   final String image;

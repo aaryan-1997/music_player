@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music_app/app/ui/pages/home_page/home_page_view.dart';
 import 'package:music_app/app/ui/pages/playlist/playlist_page.dart';
 import 'package:music_app/app/ui/pages/profile/profile_page.dart';
-import 'package:music_app/app/widgets/custom_nav_bar.dart';
 
+import 'config/widgets/custom_nav_bar.dart';
 import 'ui/theme/colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -52,15 +52,16 @@ class _MainPageState extends State<MainPage> {
       },
       child: Scaffold(
         body: getBody(),
-        bottomNavigationBar: _buildBottomBar(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButton: _buildBottomBar()
       ),
     );
   }
 
   Widget _buildBottomBar() {
     return CustomNavigationBar(
-      containerHeight: 60.h,
-      backgroundColor: AppColor.backgroundColor,
+      containerHeight: 55.h,
+      backgroundColor: AppColor.darkColor,
       selectedIndex: _currentIndex,
       showElevation: true,
       itemCornerRadius: 24,

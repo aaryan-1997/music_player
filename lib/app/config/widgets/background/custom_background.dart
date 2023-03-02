@@ -14,9 +14,10 @@ class CustomBackground extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           tileMode: TileMode.clamp,
-          stops: [0.0, 0.6, 1.0],
+          stops: [0.0, 0.4,0.6, 1.0],
           colors: [
             Color.fromARGB(50, 13, 16, 21),
+            Color.fromARGB(100, 244, 162, 125),
             Color.fromARGB(100, 244, 162, 125),
             Color.fromARGB(50, 13, 16, 21),
             // Color.fromARGB(100, 244, 162, 125),

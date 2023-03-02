@@ -3,15 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:music_app/app/config/dimensions.dart';
 import 'package:music_app/app/models/artist.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
 import 'package:music_app/app/routes/app_pages.dart';
 import 'package:music_app/app/ui/pages/home_page/bottom_sheet_player.dart';
 import 'package:music_app/app/ui/pages/home_page/widgets/music_list_item.dart';
-import 'package:music_app/app/widgets/background/custom_background.dart';
-import 'package:music_app/app/widgets/text_base.dart';
-import 'package:music_app/app/widgets/vector_asset.dart';
+import 'package:music_app/app/ui/theme/index.dart';
+import '../../../config/widgets/small_text.dart';
+import '../../../config/widgets/text_base.dart';
+import '../../../config/widgets/vector_asset.dart';
 
+import '../../../config/widgets/background/custom_background.dart';
 import '../player_page/widgets/custom_slider.dart';
 import 'widgets/home_appbar.dart';
 
@@ -32,106 +35,11 @@ class HomePage extends GetView<GetXPlayerController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const HomeAppbar(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextBase(
-                              "Artists",
-                              textAlign: TextAlign.left,
-                              fontWeight: FontWeight.bold,
-                              leftPading: 10.w,
-                            ),
-                            TextBase(
-                              "View All",
-                              textAlign: TextAlign.left,
-                              fontWeight: FontWeight.bold,
-                              rightPading: 10.w,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10.h),
-                        const TopArtists(),
-                        SizedBox(height: 25.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextBase(
-                              "Trending Songs",
-                              textAlign: TextAlign.left,
-                              fontWeight: FontWeight.bold,
-                              leftPading: 10.w,
-                            ),
-                            TextBase(
-                              "View All",
-                              textAlign: TextAlign.left,
-                              fontWeight: FontWeight.bold,
-                              rightPading: 10.w,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.h),
-                        const TopPlayList(),
-                        SizedBox(height: 20.h),
-                        TextBase(
-                          "Playlist",
-                          textAlign: TextAlign.left,
-                          fontWeight: FontWeight.bold,
-                          leftPading: 10.w,
-                        ),
-                        SizedBox(height: 20.h),
-                        Flexible(
-                          child: ListView.builder(
-                            padding: EdgeInsets.only(
-                                bottom: 10.r, left: 10.w, right: 10.w),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.playlistNotifier.length,
-                            itemBuilder: (context, index) => Obx(
-                              () => InkWell(
-                                onTap: () => controller.play,
-                                child: MusicListItem(
-                                  image: controller
-                                      .playlistNotifier[index].artUri
-                                      .toString(),
-                                  musicName:
-                                      controller.playlistNotifier[index].title,
-                                  artistName: 'artist name',
-                                  // onTap: () => Get.bottomSheet(
-                                  //   const BottomSheetPlayer(),
-                                  //   isScrollControlled: true,
-                                  //   enterBottomSheetDuration:
-                                  //       const Duration(milliseconds: 500),
-                                  //   exitBottomSheetDuration:
-                                  //       const Duration(milliseconds: 500),
-                                  // ),
-                                  //onTap: () => Get.toNamed(AppRoutes.player),
-                                  onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
-                                  onTapPause: controller
-                                              .playlistNotifier[index].title ==
-                                          controller.currentSongTitleNotifier
-                                              .toString()
-                                      ? controller.playButtonNotifier ==
-                                              ButtonState.playing
-                                          ? controller.pause
-                                          : controller.play
-                                      : () {},
-                                  isCurrent: controller
-                                              .playlistNotifier[index].title ==
-                                          controller.currentSongTitleNotifier
-                                              .toString()
-                                      ? true
-                                      : false,
-                                  isPlaying: controller.playButtonNotifier ==
-                                          ButtonState.playing
-                                      ? true
-                                      : false,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                      children: const [
+                        HomeAppbar(),
+                        TrendingSongs(),
+                        TopArtists(),
+                        PlayList(),
                       ],
                     ),
                   ),
@@ -163,6 +71,114 @@ class HomePage extends GetView<GetXPlayerController> {
             fontWeight: FontWeight.w500,
             fontSize: 12.sp,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class PlayList extends GetView<GetXPlayerController> {
+  const PlayList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const HeaderSection(title: "Playlist", showAction: false),
+        ListView.builder(
+          padding: EdgeInsets.only(bottom: 10.r, left: 10.w, right: 10.w),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: controller.playlistNotifier.length,
+          itemBuilder: (context, index) => Obx(
+            () => InkWell(
+              onTap: () => controller.play,
+              child: MusicListItem(
+                image: controller.playlistNotifier[index].artUri.toString(),
+                musicName: controller.playlistNotifier[index].title,
+                artistName: 'artist name',
+                // onTap: () => Get.bottomSheet(
+                //   const BottomSheetPlayer(),
+                //   isScrollControlled: true,
+                //   enterBottomSheetDuration:
+                //       const Duration(milliseconds: 500),
+                //   exitBottomSheetDuration:
+                //       const Duration(milliseconds: 500),
+                // ),
+                //onTap: () => Get.toNamed(AppRoutes.player),
+                onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                onTapPause: controller.playlistNotifier[index].title ==
+                        controller.currentSongTitleNotifier.toString()
+                    ? controller.playButtonNotifier == ButtonState.playing
+                        ? controller.pause
+                        : controller.play
+                    : () {},
+                isCurrent: controller.playlistNotifier[index].title ==
+                        controller.currentSongTitleNotifier.toString()
+                    ? true
+                    : false,
+                isPlaying: controller.playButtonNotifier == ButtonState.playing
+                    ? true
+                    : false,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HeaderSection extends StatelessWidget {
+  const HeaderSection({
+    Key? key,
+    required this.title,
+    this.action = "View All",
+    this.showAction = true,
+  }) : super(key: key);
+  final String title;
+  final String action;
+  final bool showAction;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+          top: Dimensions.height15,
+          left: Dimensions.width10,
+          right: Dimensions.width10,
+          bottom: Dimensions.height15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SmallText(
+            text: title,
+            textAlign: TextAlign.left,
+            weight: FontWeight.w500,
+            size: Dimensions.font16,
+          ),
+          if (showAction)
+            InkWell(
+              onTap: () {},
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  gradient: const LinearGradient(
+                    colors: [
+                      AppColor.orangeColor,
+                      AppColor.pinkColor,
+                    ],
+                  ),
+                ),
+                child: SmallText(
+                  text: "See More",
+                  textAlign: TextAlign.center,
+                  color: AppColor.blackTextColor,
+                  weight: FontWeight.bold,
+                  size: Dimensions.font12,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -462,53 +478,71 @@ class BackwordSongButton extends GetView<GetXPlayerController> {
   }
 }
 
-class TopPlayList extends GetView<GetXPlayerController> {
-  const TopPlayList({Key? key}) : super(key: key);
+class TrendingSongs extends GetView<GetXPlayerController> {
+  const TrendingSongs({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120.h,
-      child: Obx(() {
-        return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: controller.playlistNotifier.length,
-            itemBuilder: (context, index) {
-              return Obx(() {
-                return InkWell(
-                  // onTap: () => Get.bottomSheet(
-                  //   const BottomSheetPlayer(),
-                  //   isScrollControlled: true,
-                  //   enterBottomSheetDuration: const Duration(milliseconds: 500),
-                  //   exitBottomSheetDuration: const Duration(milliseconds: 500),
-                  // ),
-                 onTap: () =>  Get.toNamed(AppRoutes.bottomPlayer),
-                  child: Container(
-                    height: 110.h,
-                    width: 120.w,
-                    margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.r),
-                      border: Border.all(color: Colors.white70, width: 2.w),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          controller.playlistNotifier[index].artUri.toString(),
-                        ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const HeaderSection(title: "Trending Songs"),
+        SizedBox(
+          height: 160.h,
+          child: Obx(() {
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: controller.playlistNotifier.length,
+                itemBuilder: (context, index) {
+                  return Obx(() {
+                    return InkWell(
+                      onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 110.h,
+                            width: 120.w,
+                            margin: EdgeInsets.only(left: 10.w, right: 5.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(style: BorderStyle.none),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  controller.playlistNotifier[index].artUri
+                                      .toString(),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 15.w, top: 4.h),
+                              child: SmallText(
+                                text: controller.playlistNotifier[index].title,
+                                size: Dimensions.font12,
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 15.w, top: 4.h),
+                              child: SmallText(
+                                text: "Artist Name",
+                                size: Dimensions.font10,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    child: Align(
-                      child: VectorAsset(
-                        icon: 'ic_play',
-                        size: 30.r,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
-              });
-            });
-      }),
+                    );
+                  });
+                });
+          }),
+        ),
+      ],
     );
   }
 }
@@ -518,33 +552,71 @@ class TopArtists extends GetView<GetXPlayerController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 130.h,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: Artists.artistList.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Get.toNamed(AppRoutes.artistPage);
-              },
-              child: Container(
-                height: 130.h,
-                width: 130.w,
-                margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white70, width: 2.w),
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      Artists.artistList[index].imgUrl.toString(),
-                    ),
+    return Column(
+      children: [
+        const HeaderSection(title: "Top Artist"),
+        Container(
+          height: 140.h,
+          alignment: Alignment.center,
+          color: Colors.white10,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: Artists.artistList.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.artistPage);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 80.h,
+                        width: 80.w,
+                        margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: AppColor.orangeColor, width: 3.w),
+                          shape: BoxShape.circle,
+                          gradient: const LinearGradient(
+                            colors: [
+                              AppColor.orangeColor,
+                              AppColor.pinkColor,
+                            ],
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.network(
+                            Artists.artistList[index].imgUrl.toString(),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                       Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 15.w, top: 4.h),
+                          child: SmallText(
+                            text: Artists.artistList[index].title ?? "",
+                            size: Dimensions.font12,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 15.w, top: 4.h),
+                          child: SmallText(
+                            text: "Artist Name",
+                            size: Dimensions.font10,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-            );
-          }),
+                );
+              }),
+        ),
+      ],
     );
   }
 }

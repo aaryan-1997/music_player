@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/app/widgets/text_base.dart';
+
+import '../../../config/widgets/text_base.dart';
 
 class PlaylistPage extends StatefulWidget {
   const PlaylistPage({Key? key}) : super(key: key);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:music_app/app/widgets/circle_appbar_icon.dart';
+
+import '../../../../config/widgets/circle_appbar_icon.dart';
 
 class PlayerAppbar extends StatelessWidget implements PreferredSizeWidget {
   const PlayerAppbar({Key? key}) : super(key: key);

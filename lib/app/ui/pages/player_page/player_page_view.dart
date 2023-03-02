@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
 import 'package:music_app/app/ui/pages/player_page/widgets/custom_slider.dart';
 import 'package:music_app/app/ui/pages/player_page/widgets/player_appbar.dart';
-import 'package:music_app/app/widgets/background/custom_background.dart';
-import 'package:music_app/app/widgets/text_base.dart';
-import 'package:music_app/app/widgets/vector_asset.dart';
+
+import '../../../config/widgets/background/custom_background.dart';
+import '../../../config/widgets/text_base.dart';
+import '../../../config/widgets/vector_asset.dart';
 
 class PlayerPage extends StatelessWidget {
   const PlayerPage({Key? key}) : super(key: key);

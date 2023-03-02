@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:music_app/app/widgets/audio_video_progress_bar.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
+
+import '../../../../config/widgets/audio_video_progress_bar.dart';
 
 class CustomSlider extends GetView<GetXPlayerController> {
   const CustomSlider({Key? key}) : super(key: key);

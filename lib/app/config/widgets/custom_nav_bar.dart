@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar({
@@ -34,8 +35,10 @@ class CustomNavigationBar extends StatelessWidget {
     final bgColor = backgroundColor ?? Theme.of(context).bottomAppBarColor;
 
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30.w),
       decoration: BoxDecoration(
         color: bgColor,
+        borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           if (showElevation)
             const BoxShadow(
