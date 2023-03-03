@@ -9,7 +9,7 @@ class Artists {
         imgUrl:
             "https://static.toiimg.com/photo/msid-91352401/91352401.jpg?30106"),
     Artists(
-        title: "Krishn Kumar(KK)",
+        title: "Krishn Kumar",
         imgUrl:
             "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/KK_%28125%29.jpg/1200px-KK_%28125%29.jpg"),
     Artists(

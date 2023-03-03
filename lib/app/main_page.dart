@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:music_app/app/ui/pages/home_page/home_page_view.dart';
-import 'package:music_app/app/ui/pages/playlist/playlist_page.dart';
 import 'package:music_app/app/ui/pages/profile/profile_page.dart';
 
 import 'config/widgets/custom_nav_bar.dart';
+import 'ui/pages/search/search_page.dart';
 import 'ui/theme/colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -51,10 +51,10 @@ class _MainPageState extends State<MainPage> {
         }
       },
       child: Scaffold(
-        body: getBody(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-        floatingActionButton: _buildBottomBar()
-      ),
+          body: getBody(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton: _buildBottomBar()),
     );
   }
 
@@ -75,22 +75,24 @@ class _MainPageState extends State<MainPage> {
       }),
       items: <BottomNavyBarItem>[
         BottomNavyBarItem(
-          icon:
-              NavBarIcon(imgUrl: _currentIndex == 0 ? "home.png" : "home_white.png"),
+          icon: NavBarIcon(
+              imgUrl: _currentIndex == 0 ? "home.png" : "home_white.png"),
           title: const Text("Home"),
           activeColor: AppColor.whiteColor,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: NavBarIcon(imgUrl: _currentIndex == 1 ? "search.png" : "search_white.png"),
+          icon: NavBarIcon(
+              imgUrl: _currentIndex == 1 ? "search.png" : "search_white.png"),
           title: const Text("Search"),
           activeColor: AppColor.whiteColor,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: NavBarIcon(imgUrl: _currentIndex == 2 ? "user.png" : "user_white.png"),
+          icon: NavBarIcon(
+              imgUrl: _currentIndex == 2 ? "user.png" : "user_white.png"),
           title: const Text("Profile"),
           activeColor: AppColor.whiteColor,
           inactiveColor: _inactiveColor,
@@ -152,7 +154,7 @@ class _MainPageState extends State<MainPage> {
 
   //====Body===
   Widget getBody() {
-    List<Widget> pages = const [HomePage(), PlaylistPage(), ProfilePage()];
+    List<Widget> pages = const [HomePage(), SearchPage(), ProfilePage()];
     return PageView(
       pageSnapping: false,
       physics: const NeverScrollableScrollPhysics(),
@@ -165,7 +167,10 @@ class _MainPageState extends State<MainPage> {
 
 class NavBarIcon extends StatelessWidget {
   const NavBarIcon({
-    Key? key,  this.height=24,  this.width=24, required this.imgUrl,
+    Key? key,
+    this.height = 24,
+    this.width = 24,
+    required this.imgUrl,
   }) : super(key: key);
   final double height;
   final double width;
@@ -176,7 +181,8 @@ class NavBarIcon extends StatelessWidget {
       "assets/icon/$imgUrl",
       height: height,
       width: width,
-      errorBuilder: (context, error, stackTrace) =>const Icon(Icons.home_outlined) ,
+      errorBuilder: (context, error, stackTrace) =>
+          const Icon(Icons.home_outlined),
     );
   }
 }

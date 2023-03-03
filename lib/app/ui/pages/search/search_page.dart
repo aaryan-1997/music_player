@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/app/config/dimensions.dart';
+import 'package:music_app/app/config/widgets/small_text.dart';
 
-import '../../../config/dimensions.dart';
 import '../../../config/widgets/background/custom_background.dart';
-import '../../../config/widgets/small_text.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
@@ -19,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Scaffold(
           body: Center(
             child: SmallText(
-              text: 'ProfilePage is working',
+              text: 'PlaylistPage is working',
               size: Dimensions.font18,
             ),
           ),

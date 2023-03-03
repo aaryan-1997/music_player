@@ -1,5 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:music_app/app/config/dimensions.dart';
+import 'package:music_app/app/config/widgets/small_text.dart';
+import 'package:music_app/app/models/artist.dart';
 
 import '../../../config/widgets/background/custom_background.dart';
 
@@ -12,6 +15,7 @@ class ArtistsPage extends StatefulWidget {
 
 class _ArtistsPageState extends State<ArtistsPage> {
   final ScrollController _scrollController = ScrollController();
+  int index = Get.arguments ?? 0;
   double height = 200;
   bool showButton = false;
   @override
@@ -40,6 +44,7 @@ class _ArtistsPageState extends State<ArtistsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Artists artist = Artists.artistList[index];
     return SafeArea(
       child: Scaffold(
         body: CustomBackground(
@@ -49,19 +54,29 @@ class _ArtistsPageState extends State<ArtistsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                  title: Text('My App'),
+                  title: SmallText(
+                    text: artist.title ?? "",
+                    size: Dimensions.font16,
+                  ),
                   pinned: true,
+                  elevation: 0,
+                  centerTitle: false,
                   expandedHeight: height,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.pin,
                     background: Image.network(
-                      'https://static.toiimg.com/photo/msid-85678940/85678940.jpg',
-                      fit: BoxFit.cover,
+                      artist.imgUrl ?? "",
+                      fit: BoxFit.fill,
                       height: height,
                     ),
                   ),
                   actions: [
-                    showButton ? Icon(Icons.abc) : SizedBox.shrink(),
+                    showButton
+                        ? Icon(
+                            Icons.play_circle,
+                            size: Dimensions.iconSize20,
+                          )
+                        : const SizedBox.shrink(),
                   ],
                 ),
               ];

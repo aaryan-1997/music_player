@@ -26,7 +26,7 @@ class BottomSheetPlayer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const BottomSheetAppbar(), //
-                    SizedBox(height: 20.h),
+                    // SizedBox(height: 20.h),
                     const ArtImage(),
                     //SizedBox(height: 5.h),
                     const ArtistAndSongName(),
@@ -39,9 +39,9 @@ class BottomSheetPlayer extends StatelessWidget {
                       children: [
                         //const RepeatButton(),
                         // SizedBox(width: 10.r),
-                         const PreviousSongButton(),
+                        const PreviousSongButton(),
                         SizedBox(width: 10.r),
-                       const BackwordSongButton(),
+                        const BackwordSongButton(),
                         SizedBox(width: 10.r),
                         const PlayButton(),
                         SizedBox(width: 10.r),
@@ -260,7 +260,9 @@ class ForwordSongButton extends GetView<GetXPlayerController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: (controller.playlistNotifier.isNotEmpty) ? controller.forwordSeek10Sec :null ,
+        onTap: (controller.playlistNotifier.isNotEmpty)
+            ? controller.forwordSeek10Sec
+            : null,
         child: const Icon(
           Icons.forward_10,
           color: Colors.white,
@@ -277,7 +279,9 @@ class BackwordSongButton extends GetView<GetXPlayerController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: (controller.playlistNotifier.isNotEmpty) ? controller.backwordSeek10Sec :null ,
+        onTap: (controller.playlistNotifier.isNotEmpty)
+            ? controller.backwordSeek10Sec
+            : null,
         child: Transform.scale(
           scaleX: -1,
           child: const Icon(

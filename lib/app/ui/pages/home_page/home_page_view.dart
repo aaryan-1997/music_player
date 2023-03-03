@@ -7,18 +7,15 @@ import 'package:music_app/app/config/dimensions.dart';
 import 'package:music_app/app/models/artist.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
 import 'package:music_app/app/routes/app_pages.dart';
-import 'package:music_app/app/ui/pages/home_page/bottom_sheet_player.dart';
 import 'package:music_app/app/ui/pages/home_page/widgets/music_list_item.dart';
 import 'package:music_app/app/ui/theme/index.dart';
 import '../../../config/widgets/small_text.dart';
-import '../../../config/widgets/text_base.dart';
-import '../../../config/widgets/vector_asset.dart';
 
 import '../../../config/widgets/background/custom_background.dart';
-import '../player_page/widgets/custom_slider.dart';
+import '../mini_player.dart';
 import 'widgets/home_appbar.dart';
 
-class HomePage extends GetView<GetXPlayerController> {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -26,103 +23,66 @@ class HomePage extends GetView<GetXPlayerController> {
     return CustomBackground(
       child: SafeArea(
         child: Scaffold(
-          body: Obx(
-            () => Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        HomeAppbar(),
-                        TrendingSongs(),
-                        TopArtists(),
-                        PlayList(),
-                      ],
-                    ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const HomeAppbar(),
+                      const TrendingSongs(),
+                      const TopArtists(),
+                      const NewRelease(),
+                      const FreshHits(),
+                      //PlayList(),
+                      SizedBox(height: 60.h)
+                    ],
                   ),
                 ),
-                const MiniPlayer(),
-              ],
-            ),
+              ),
+              const MiniPlayer(),
+            ],
           ),
         ),
       ),
     );
   }
-
-  Widget shuffleButton(VoidCallback onTap) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(26.r, 24.r, 26.r, 40.r),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: VectorAsset(
-              icon: 'ic_shuffle',
-              size: 24.r,
-            ),
-          ),
-          SizedBox(width: 10.r),
-          TextBase(
-            'Shuffle',
-            fontWeight: FontWeight.w500,
-            fontSize: 12.sp,
-          ),
-        ],
-      ),
-    );
-  }
 }
 
-class PlayList extends GetView<GetXPlayerController> {
-  const PlayList({Key? key}) : super(key: key);
+class NewRelease extends GetView<GetXPlayerController> {
+  const NewRelease({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const HeaderSection(title: "Playlist", showAction: false),
-        ListView.builder(
-          padding: EdgeInsets.only(bottom: 10.r, left: 10.w, right: 10.w),
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: controller.playlistNotifier.length,
-          itemBuilder: (context, index) => Obx(
-            () => InkWell(
-              onTap: () => controller.play,
-              child: MusicListItem(
-                image: controller.playlistNotifier[index].artUri.toString(),
-                musicName: controller.playlistNotifier[index].title,
-                artistName: 'artist name',
-                // onTap: () => Get.bottomSheet(
-                //   const BottomSheetPlayer(),
-                //   isScrollControlled: true,
-                //   enterBottomSheetDuration:
-                //       const Duration(milliseconds: 500),
-                //   exitBottomSheetDuration:
-                //       const Duration(milliseconds: 500),
-                // ),
-                //onTap: () => Get.toNamed(AppRoutes.player),
-                onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
-                onTapPause: controller.playlistNotifier[index].title ==
-                        controller.currentSongTitleNotifier.toString()
-                    ? controller.playButtonNotifier == ButtonState.playing
-                        ? controller.pause
-                        : controller.play
-                    : () {},
-                isCurrent: controller.playlistNotifier[index].title ==
-                        controller.currentSongTitleNotifier.toString()
-                    ? true
-                    : false,
-                isPlaying: controller.playButtonNotifier == ButtonState.playing
-                    ? true
-                    : false,
-              ),
-            ),
-          ),
+        const HeaderSection(
+          title: "New Release",
+        ),
+        SizedBox(
+          height: 160.h,
+          child: Obx(() {
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: controller.playlistNotifier.length,
+                itemBuilder: (context, index) {
+                  return Obx(() {
+                    return PlayerCard(
+                      image:
+                          controller.playlistNotifier[index].artUri.toString(),
+                      musicName: controller.playlistNotifier[index].title,
+                      artistName: "Artist Name",
+                      onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                    );
+                  });
+                });
+          }),
         ),
       ],
     );
@@ -143,7 +103,7 @@ class HeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: Dimensions.height15,
+          top: Dimensions.height10,
           left: Dimensions.width10,
           right: Dimensions.width10,
           bottom: Dimensions.height15),
@@ -185,299 +145,6 @@ class HeaderSection extends StatelessWidget {
   }
 }
 
-class MiniPlayer extends GetView<GetXPlayerController> {
-  const MiniPlayer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return controller.isCloseNotifier.value
-          ? const SizedBox.shrink()
-          : GestureDetector(
-              onTap: () {
-                Get.bottomSheet(
-                  const BottomSheetPlayer(),
-                  isScrollControlled: true,
-                  enterBottomSheetDuration: const Duration(milliseconds: 500),
-                  exitBottomSheetDuration: const Duration(milliseconds: 500),
-                );
-              },
-              child: Column(
-                children: [
-                  const MiniPlayerContainer(),
-                  SizedBox(height: 8.h, child: const CustomSlider()),
-                ],
-              ),
-            );
-    });
-  }
-}
-
-class MiniPlayerContainer extends GetView<GetXPlayerController> {
-  const MiniPlayerContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return Container(
-        width: Get.width,
-        height: 70,
-        alignment: Alignment.center,
-        color: Colors.black38,
-        child: Row(
-          children: [
-            const MiniArtImage(),
-            const Expanded(
-              child: MiniArtistAndSongName(),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: 10.w),
-              child: Row(
-                children: [
-                  // const MiniPreviousSongButton(),
-                  const BackwordSongButton(),
-                  SizedBox(width: 15.w),
-                  const MiniPlayButton(),
-                  SizedBox(width: 15.w),
-                  controller.playButtonNotifier.value == ButtonState.paused
-                      ? const MiniCloseSongButton()
-                      : const MiniNextSongButton(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  }
-}
-
-class Playlist extends GetView<GetXPlayerController> {
-  const Playlist({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Obx(
-        () => ListView.builder(
-          itemCount: controller.playlistNotifier.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(controller.playlistNotifier[index].title),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class MiniArtImage extends GetView<GetXPlayerController> {
-  const MiniArtImage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20.r),
-          child: Obx(
-            () => Image.network(
-              controller.currentSongArtNotifier.value,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MiniArtistAndSongName extends GetView<GetXPlayerController> {
-  const MiniArtistAndSongName({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextBase(
-              controller.currentSongTitleNotifier.value,
-              fontWeight: FontWeight.bold,
-            ),
-            SizedBox(height: 3.r),
-            TextBase(
-              "artist name",
-              fontWeight: FontWeight.w500,
-              fontSize: 13.sp,
-              color: Colors.white54,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MiniPreviousSongButton extends GetView<GetXPlayerController> {
-  const MiniPreviousSongButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => GestureDetector(
-        onTap:
-            (controller.isFirstSongNotifier.value) ? null : controller.previous,
-        child: VectorAsset(
-          icon: 'ic_backward',
-          size: 26.r,
-          color: (controller.isFirstSongNotifier.value)
-              ? Colors.white54
-              : Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class MiniPlayButton extends GetView<GetXPlayerController> {
-  const MiniPlayButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      switch (controller.playButtonNotifier.value) {
-        case ButtonState.loading:
-          return Container(
-            width: 50.r,
-            height: 50.r,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white24,
-            ),
-            child: const Center(
-                child: CircularProgressIndicator(
-              color: Colors.white54,
-              strokeWidth: 2,
-            )),
-          );
-        case ButtonState.paused:
-          return Container(
-            width: 50.r,
-            height: 50.r,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white24,
-            ),
-            child: Center(
-              child: IconButton(
-                icon: const Icon(Icons.play_arrow),
-                iconSize: 30.h,
-                onPressed: controller.play,
-              ),
-            ),
-          );
-        case ButtonState.playing:
-          return Container(
-            width: 50.r,
-            height: 50.r,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white24,
-            ),
-            child: Center(
-              child: IconButton(
-                icon: const Icon(Icons.pause),
-                iconSize: 26.h,
-                onPressed: controller.pause,
-              ),
-            ),
-          );
-        case ButtonState.idle:
-          return const MiniCloseSongButton();
-      }
-    });
-  }
-}
-
-class MiniNextSongButton extends GetView<GetXPlayerController> {
-  const MiniNextSongButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => GestureDetector(
-        onTap: (controller.isLastSongNotifier.value) ? null : controller.next,
-        child: VectorAsset(
-          icon: 'ic_forward',
-          size: 26.r,
-          color: (controller.isLastSongNotifier.value)
-              ? Colors.white54
-              : Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class MiniCloseSongButton extends GetView<GetXPlayerController> {
-  const MiniCloseSongButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => GestureDetector(
-          onTap: () {
-            controller.isCloseNotifier.value = true;
-          },
-          child: Icon(
-            Icons.close,
-            color: (controller.isLastSongNotifier.value)
-                ? Colors.white54
-                : Colors.white,
-            size: 26.h,
-          )
-          // VectorAsset(
-          //   icon: 'ic_close',
-          //   size: 26.r,
-          //   color: (controller.isLastSongNotifier.value)
-          //       ? Colors.white54
-          //       : Colors.white,
-          // ),
-          ),
-    );
-  }
-}
-
-class BackwordSongButton extends GetView<GetXPlayerController> {
-  const BackwordSongButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => GestureDetector(
-        onTap: (controller.playlistNotifier.isNotEmpty)
-            ? controller.backwordSeek10Sec
-            : null,
-        child: Transform.scale(
-          scaleX: -1,
-          child: const Icon(
-            Icons.forward_10_outlined,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class TrendingSongs extends GetView<GetXPlayerController> {
   const TrendingSongs({Key? key}) : super(key: key);
 
@@ -486,7 +153,8 @@ class TrendingSongs extends GetView<GetXPlayerController> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const HeaderSection(title: "Trending Songs"),
+        SizedBox(height: 10.h),
+        const HeaderSection(title: "Trending Playlists"),
         SizedBox(
           height: 160.h,
           child: Obx(() {
@@ -496,47 +164,12 @@ class TrendingSongs extends GetView<GetXPlayerController> {
                 itemCount: controller.playlistNotifier.length,
                 itemBuilder: (context, index) {
                   return Obx(() {
-                    return InkWell(
+                    return PlayerCard(
+                      image:
+                          controller.playlistNotifier[index].artUri.toString(),
+                      musicName: controller.playlistNotifier[index].title,
+                      artistName: "Artist Name",
                       onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 110.h,
-                            width: 120.w,
-                            margin: EdgeInsets.only(left: 10.w, right: 5.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              border: Border.all(style: BorderStyle.none),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  controller.playlistNotifier[index].artUri
-                                      .toString(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 15.w, top: 4.h),
-                              child: SmallText(
-                                text: controller.playlistNotifier[index].title,
-                                size: Dimensions.font12,
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 15.w, top: 4.h),
-                              child: SmallText(
-                                text: "Artist Name",
-                                size: Dimensions.font10,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     );
                   });
                 });
@@ -565,7 +198,7 @@ class TopArtists extends GetView<GetXPlayerController> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Get.toNamed(AppRoutes.artistPage);
+                    Get.toNamed(AppRoutes.artistPage, arguments: index);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -574,7 +207,7 @@ class TopArtists extends GetView<GetXPlayerController> {
                       Container(
                         height: 80.h,
                         width: 80.w,
-                        margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                        margin: EdgeInsets.only(left: 5.w, top: 10.h),
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: AppColor.orangeColor, width: 3.w),
@@ -593,9 +226,9 @@ class TopArtists extends GetView<GetXPlayerController> {
                           ),
                         ),
                       ),
-                       Flexible(
+                      Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left: 15.w, top: 4.h),
+                          padding: EdgeInsets.only(left: 10.w, top: 4.h),
                           child: SmallText(
                             text: Artists.artistList[index].title ?? "",
                             size: Dimensions.font12,
@@ -604,9 +237,9 @@ class TopArtists extends GetView<GetXPlayerController> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left: 15.w, top: 4.h),
+                          padding: EdgeInsets.only(left: 10.w),
                           child: SmallText(
-                            text: "Artist Name",
+                            text: "7 songs",
                             size: Dimensions.font10,
                           ),
                         ),
@@ -617,6 +250,145 @@ class TopArtists extends GetView<GetXPlayerController> {
               }),
         ),
       ],
+    );
+  }
+}
+
+class FreshHits extends GetView<GetXPlayerController> {
+  const FreshHits({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const HeaderSection(
+          title: "Fresh Hits",
+        ),
+        SizedBox(
+          height: 160.h,
+          child: Obx(() {
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: controller.playlistNotifier.length,
+                itemBuilder: (context, index) {
+                  return Obx(() {
+                    return PlayerCard(
+                      image:
+                          controller.playlistNotifier[index].artUri.toString(),
+                      musicName: controller.playlistNotifier[index].title,
+                      artistName: "Artist Name",
+                      onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                    );
+                  });
+                });
+          }),
+        ),
+      ],
+    );
+  }
+}
+
+class PlayList extends GetView<GetXPlayerController> {
+  const PlayList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const HeaderSection(title: "Playlist", showAction: false),
+        ListView.builder(
+          padding: EdgeInsets.only(bottom: 10.r, left: 10.w, right: 10.w),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: controller.playlistNotifier.length,
+          itemBuilder: (context, index) => Obx(
+            () => InkWell(
+              onTap: () => controller.play,
+              child: MusicListItem(
+                image: controller.playlistNotifier[index].artUri.toString(),
+                musicName: controller.playlistNotifier[index].title,
+                artistName: 'artist name',
+                onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                onTapPause: controller.playlistNotifier[index].title ==
+                        controller.currentSongTitleNotifier.toString()
+                    ? controller.playButtonNotifier == ButtonState.playing
+                        ? controller.pause
+                        : controller.play
+                    : () {},
+                isCurrent: controller.playlistNotifier[index].title ==
+                        controller.currentSongTitleNotifier.toString()
+                    ? true
+                    : false,
+                isPlaying: controller.playButtonNotifier == ButtonState.playing
+                    ? true
+                    : false,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PlayerCard extends StatelessWidget {
+  const PlayerCard(
+      {Key? key,
+      required this.image,
+      required this.musicName,
+      required this.artistName,
+      required this.onTap})
+      : super(key: key);
+  final String image;
+  final String musicName;
+  final String artistName;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 110.h,
+            width: 120.w,
+            margin: EdgeInsets.only(left: 10.w, right: 5.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(style: BorderStyle.none),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  image,
+                ),
+              ),
+            ),
+          ),
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(left: 15.w, top: 4.h),
+              child: SmallText(
+                text: musicName,
+                size: Dimensions.font12,
+              ),
+            ),
+          ),
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(left: 15.w, top: 4.h),
+              child: SmallText(
+                text: artistName,
+                size: Dimensions.font10,
+                color: Colors.white54,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
