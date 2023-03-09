@@ -36,8 +36,8 @@ class HomePage extends StatelessWidget {
                       const TrendingSongs(),
                       const TopArtists(),
                       const NewRelease(),
-                      const FreshHits(),
-                      //PlayList(),
+                      //const FreshHits(),
+                      const PlayList(),
                       SizedBox(height: 60.h)
                     ],
                   ),
@@ -70,13 +70,13 @@ class NewRelease extends GetView<GetXPlayerController> {
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemCount: controller.playlistNotifier.length,
+                itemCount: controller.latestRelease.length,
                 itemBuilder: (context, index) {
+                  var list = controller.latestRelease;
                   return Obx(() {
                     return PlayerCard(
-                      image:
-                          controller.playlistNotifier[index].artUri.toString(),
-                      musicName: controller.playlistNotifier[index].title,
+                      image: list[index].thumbnail128.toString(),
+                      musicName: list[index].name ?? "",
                       artistName: "Artist Name",
                       onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
                     );
@@ -161,13 +161,13 @@ class TrendingSongs extends GetView<GetXPlayerController> {
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemCount: controller.playlistNotifier.length,
+                itemCount: controller.latestRelease.length,
                 itemBuilder: (context, index) {
+                  var list = controller.latestRelease;
                   return Obx(() {
                     return PlayerCard(
-                      image:
-                          controller.playlistNotifier[index].artUri.toString(),
-                      musicName: controller.playlistNotifier[index].title,
+                      image: list[index].thumbnail128.toString(),
+                      musicName: list[index].name ?? "",
                       artistName: "Artist Name",
                       onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
                     );
@@ -299,35 +299,25 @@ class PlayList extends GetView<GetXPlayerController> {
     return Column(
       children: [
         const HeaderSection(title: "Playlist", showAction: false),
-        ListView.builder(
-          padding: EdgeInsets.only(bottom: 10.r, left: 10.w, right: 10.w),
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: controller.playlistNotifier.length,
-          itemBuilder: (context, index) => Obx(
-            () => InkWell(
-              onTap: () => controller.play,
-              child: MusicListItem(
-                image: controller.playlistNotifier[index].artUri.toString(),
-                musicName: controller.playlistNotifier[index].title,
-                artistName: 'artist name',
-                onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
-                onTapPause: controller.playlistNotifier[index].title ==
-                        controller.currentSongTitleNotifier.toString()
-                    ? controller.playButtonNotifier == ButtonState.playing
-                        ? controller.pause
-                        : controller.play
-                    : () {},
-                isCurrent: controller.playlistNotifier[index].title ==
-                        controller.currentSongTitleNotifier.toString()
-                    ? true
-                    : false,
-                isPlaying: controller.playButtonNotifier == ButtonState.playing
-                    ? true
-                    : false,
-              ),
-            ),
-          ),
+        SizedBox(
+          height: 160.h,
+          child: Obx(() {
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: controller.playlists.length,
+                itemBuilder: (context, index) {
+                  return Obx(() {
+                    return PlayerCard(
+                      image:
+                          "http://65.2.183.74//storage/7/conversions/62541b21309a5_20210110_121942_0000-mediumthumb.jpg",
+                      musicName: controller.playlists[index].name ?? "",
+                      artistName: "Artist Name",
+                      onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                    );
+                  });
+                });
+          }),
         ),
       ],
     );
@@ -392,3 +382,28 @@ class PlayerCard extends StatelessWidget {
     );
   }
 }
+
+
+// InkWell(
+//                 onTap: () => controller.play,
+//                 child: MusicListItem(
+//                   image: controller.playlistNotifier[index].artUri.toString(),
+//                   musicName: controller.playlistNotifier[index].title,
+//                   artistName: 'artist name',
+//                   onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+//                   onTapPause: controller.playlistNotifier[index].title ==
+//                           controller.currentSongTitleNotifier.toString()
+//                       ? controller.playButtonNotifier == ButtonState.playing
+//                           ? controller.pause
+//                           : controller.play
+//                       : () {},
+//                   isCurrent: controller.playlistNotifier[index].title ==
+//                           controller.currentSongTitleNotifier.toString()
+//                       ? true
+//                       : false,
+//                   isPlaying:
+//                       controller.playButtonNotifier == ButtonState.playing
+//                           ? true
+//                           : false,
+//                 ),
+//               ),

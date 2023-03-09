@@ -1,18 +1,27 @@
 import 'package:get/get.dart';
+import 'package:music_app/app/services/api.dart';
+import 'package:music_app/app/services/api_client.dart';
 
 class GetXDemoPlaylist extends GetxService {
-
   Future<GetXDemoPlaylist> init() async {
     return this;
   }
 
-  Future<List<Map<String, String>>> fetchInitialPlaylist(
-      {int length = 5}) async {
-    return List.generate(length, (index) => _nextSong());
+  // Future<List<Map<String, String>>> fetchInitialPlaylist(
+  //     {int length = 5}) async {
+  //   var response = await getHomeSongList();
+  //   return List.generate(length, (index) => _nextSong());
+  // }
+  Future<Response> fetchInitialPlaylist() async {
+    return await getHomeSongList();
   }
 
   Future<Map<String, String>> fetchAnotherSong() async {
     return _nextSong();
+  }
+
+  Future<Response> getHomeSongList() async {
+    return await ApiClient().getRequest(Api.home);
   }
 
   var _songIndex = 0;

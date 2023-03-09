@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
+import 'package:music_app/app/models/home_music_response.dart';
 
 import 'getx_audio_handler.dart';
 import 'getx_playlist_repository.dart';
@@ -28,22 +29,33 @@ class GetXPlayerController extends GetxController {
   final isLastSongNotifier = true.obs;
   final isCloseNotifier = true.obs;
   final isShuffleModeEnabledNotifier = false.obs;
+  final latestRelease = <LatestRelease>[].obs;
+  final featuredArtists = <FeaturedArtist>[].obs;
+  final playlists = <Playlist>[].obs;
 
   final _audioHandler = Get.find<GetXAudioHandler>().audioHandler;
 
   Future<void> _loadPlaylist() async {
     final songRepository = Get.find<GetXDemoPlaylist>();
-    final playlist = await songRepository.fetchInitialPlaylist();
-    final mediaItems = playlist
-        .map((song) => MediaItem(
-              id: song['id'] ?? '',
-              album: song['album'] ?? '',
-              title: song['title'] ?? '',
-              artUri: Uri.parse(song['artUri'] ?? ''),
-              extras: {'url': song['url']},
-            ))
-        .toList();
-    _audioHandler.addQueueItems(mediaItems);
+    Response response = await songRepository.fetchInitialPlaylist();
+    if (response.statusCode == 200) {
+      var result = homeMusicResponseFromJson(response.bodyString ?? "");
+      if (result.code == 200) {
+        latestRelease.value = result.data!.latestRelease ?? [];
+        featuredArtists.value = result.data!.featuredArtists ?? [];
+        playlists.value = result.data!.playlists ?? [];
+      }
+    }
+    // final mediaItems = playlist
+    //     .map((song) => MediaItem(
+    //           id: song['id'] ?? '',
+    //           album: song['album'] ?? '',
+    //           title: song['title'] ?? '',
+    //           artUri: Uri.parse(song['artUri'] ?? ''),
+    //           extras: {'url': song['url']},
+    //         ))
+    //     .toList();
+    //_audioHandler.addQueueItems(MediaItem(id: id, title: title));
   }
 
   void _listenToChangesInPlaylist() {
