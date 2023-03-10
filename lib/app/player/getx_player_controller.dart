@@ -58,6 +58,11 @@ class GetXPlayerController extends GetxController {
     //_audioHandler.addQueueItems(MediaItem(id: id, title: title));
   }
 
+  void updatePlayList(List<MediaItem> mediaItems) {
+    _audioHandler.addQueueItems(mediaItems);
+    //_audioHandler.updateMediaItem(mediaItem)
+  }
+
   void _listenToChangesInPlaylist() {
     _audioHandler.queue.listen((playlist) {
       if (playlist.isEmpty) {

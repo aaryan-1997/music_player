@@ -1,5 +1,6 @@
 // ignore_for_file: unrelated_type_equality_checks
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,7 @@ import 'package:music_app/app/config/dimensions.dart';
 import 'package:music_app/app/models/artist.dart';
 import 'package:music_app/app/player/getx_player_controller.dart';
 import 'package:music_app/app/routes/app_pages.dart';
-import 'package:music_app/app/ui/pages/home_page/widgets/music_list_item.dart';
+import 'package:music_app/app/services/api.dart';
 import 'package:music_app/app/ui/theme/index.dart';
 import '../../../config/widgets/small_text.dart';
 
@@ -169,7 +170,23 @@ class TrendingSongs extends GetView<GetXPlayerController> {
                       image: list[index].thumbnail128.toString(),
                       musicName: list[index].name ?? "",
                       artistName: "Artist Name",
-                      onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                      onTap: () {
+                        List<MediaItem> mediaItems = [];
+                        list.forEach((element) {
+                          mediaItems.add(
+                            MediaItem(
+                              id: "${element.id}",
+                              title: element.name ?? "",
+                              artUri: Uri.parse(element.thumbnail128 ?? ''),
+                              extras: {
+                                'url': "${Api.baseUrl}/${element.songFile}"
+                              },
+                            ),
+                          );
+                        });
+                        controller.updatePlayList(mediaItems);
+                        Get.toNamed(AppRoutes.bottomPlayer);
+                      },
                     );
                   });
                 });
