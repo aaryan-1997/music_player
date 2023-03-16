@@ -24,7 +24,7 @@ class GetXAudioHandler extends GetxService {
   }
 }
 
-class GetXBaseAudioHandler extends BaseAudioHandler {
+class GetXBaseAudioHandler extends BaseAudioHandler{
   final _player = AudioPlayer();
   final _playlist = ConcatenatingAudioSource(children: []);
 

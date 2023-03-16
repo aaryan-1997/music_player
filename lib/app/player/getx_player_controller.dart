@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_app/app/models/home_music_response.dart';
 
 import 'getx_audio_handler.dart';
@@ -32,8 +33,10 @@ class GetXPlayerController extends GetxController {
   final latestRelease = <LatestRelease>[].obs;
   final featuredArtists = <FeaturedArtist>[].obs;
   final playlists = <Playlist>[].obs;
+  final _playlist = ConcatenatingAudioSource(children: []);
 
   final _audioHandler = Get.find<GetXAudioHandler>().audioHandler;
+  GetXBaseAudioHandler getXBaseAudioHandler = GetXBaseAudioHandler();
 
   Future<void> _loadPlaylist() async {
     final songRepository = Get.find<GetXDemoPlaylist>();
@@ -46,6 +49,7 @@ class GetXPlayerController extends GetxController {
         playlists.value = result.data!.playlists ?? [];
       }
     }
+
     // final mediaItems = playlist
     //     .map((song) => MediaItem(
     //           id: song['id'] ?? '',
@@ -60,7 +64,8 @@ class GetXPlayerController extends GetxController {
 
   void updatePlayList(List<MediaItem> mediaItems) {
     _audioHandler.addQueueItems(mediaItems);
-    //_audioHandler.updateMediaItem(mediaItem)
+    _playlist..addAll([]);
+    getXBaseAudioHandler.player.setAudioSource(_playlist);
   }
 
   void _listenToChangesInPlaylist() {
@@ -208,15 +213,15 @@ class GetXPlayerController extends GetxController {
     }
   }
 
-  Future<void> add() async {
-    final songRepository = Get.find<GetXDemoPlaylist>();
-    final song = await songRepository.fetchAnotherSong();
-    final mediaItem = MediaItem(
-      id: song['id'] ?? '',
-      album: song['album'] ?? '',
-      title: song['title'] ?? '',
-      extras: {'url': song['url']},
-    );
+  Future<void> add(mediaItem) async {
+    // final songRepository = Get.find<GetXDemoPlaylist>();
+    // final song = await songRepository.fetchAnotherSong();
+    // final mediaItem = MediaItem(
+    //   id: song['id'] ?? '',
+    //   album: song['album'] ?? '',
+    //   title: song['title'] ?? '',
+    //   extras: {'url': song['url']},
+    // );
     _audioHandler.addQueueItem(mediaItem);
   }
 

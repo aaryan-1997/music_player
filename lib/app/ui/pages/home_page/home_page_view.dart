@@ -164,27 +164,36 @@ class TrendingSongs extends GetView<GetXPlayerController> {
                 shrinkWrap: true,
                 itemCount: controller.latestRelease.length,
                 itemBuilder: (context, index) {
-                  var list = controller.latestRelease;
+                  var list = controller.latestRelease[index];
                   return Obx(() {
                     return PlayerCard(
-                      image: list[index].thumbnail128.toString(),
-                      musicName: list[index].name ?? "",
+                      image: list.thumbnail128.toString(),
+                      musicName: list.name ?? "",
                       artistName: "Artist Name",
                       onTap: () {
-                        List<MediaItem> mediaItems = [];
-                        list.forEach((element) {
-                          mediaItems.add(
-                            MediaItem(
-                              id: "${element.id}",
-                              title: element.name ?? "",
-                              artUri: Uri.parse(element.thumbnail128 ?? ''),
-                              extras: {
-                                'url': "${Api.baseUrl}/${element.songFile}"
-                              },
-                            ),
-                          );
-                        });
-                        controller.updatePlayList(mediaItems);
+                        // List<MediaItem> mediaItems = [];
+                        // for (var element in list) {
+                        //   mediaItems.add(
+                        //     MediaItem(
+                        //       id: "${element.id}",
+                        //       title: element.name ?? "",
+                        //       artUri: Uri.parse(element.thumbnail128 ?? ''),
+                        //       extras: {
+                        //         'url': "${Api.baseUrl}/${element.songFile}"
+                        //       },
+                        //     ),
+                        //   );
+                        // }
+                        //controller.updatePlayList(mediaItems);
+
+                        var mediaItem = MediaItem(
+                          id: "${list.id}",
+                          title: list.name ?? "",
+                          artUri: Uri.parse(list.thumbnail128 ?? ''),
+                          extras: {'url': "${Api.baseUrl}/${list.songFile}"},
+                        );
+                        controller.add(mediaItem);
+                        controller.play();
                         Get.toNamed(AppRoutes.bottomPlayer);
                       },
                     );
