@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_app/app/models/home_music_response.dart';
 
+import '../services/api.dart';
 import 'getx_audio_handler.dart';
 import 'getx_playlist_repository.dart';
 
@@ -33,10 +34,8 @@ class GetXPlayerController extends GetxController {
   final latestRelease = <LatestRelease>[].obs;
   final featuredArtists = <FeaturedArtist>[].obs;
   final playlists = <Playlist>[].obs;
-  final _playlist = ConcatenatingAudioSource(children: []);
 
   final _audioHandler = Get.find<GetXAudioHandler>().audioHandler;
-  GetXBaseAudioHandler getXBaseAudioHandler = GetXBaseAudioHandler();
 
   Future<void> _loadPlaylist() async {
     final songRepository = Get.find<GetXDemoPlaylist>();
@@ -49,23 +48,12 @@ class GetXPlayerController extends GetxController {
         playlists.value = result.data!.playlists ?? [];
       }
     }
-
-    // final mediaItems = playlist
-    //     .map((song) => MediaItem(
-    //           id: song['id'] ?? '',
-    //           album: song['album'] ?? '',
-    //           title: song['title'] ?? '',
-    //           artUri: Uri.parse(song['artUri'] ?? ''),
-    //           extras: {'url': song['url']},
-    //         ))
-    //     .toList();
-    //_audioHandler.addQueueItems(MediaItem(id: id, title: title));
   }
 
-  void updatePlayList(List<MediaItem> mediaItems) {
-    _audioHandler.addQueueItems(mediaItems);
-    _playlist..addAll([]);
-    getXBaseAudioHandler.player.setAudioSource(_playlist);
+  void updatePlayList(List<MediaItem> mediaItems, int index) async {
+    GetXBaseAudioHandler getXBaseAudioHandler = GetXBaseAudioHandler();
+    getXBaseAudioHandler.player
+        .setAudioSource(_createAudioSource(mediaItems), initialIndex: index);
   }
 
   void _listenToChangesInPlaylist() {
@@ -240,6 +228,16 @@ class GetXPlayerController extends GetxController {
   void stop() {
     _audioHandler.stop();
     //playButtonNotifier.value = ButtonState.idle;
+  }
+
+  _createAudioSource(List<MediaItem> mediaItem) {
+    return ConcatenatingAudioSource(
+      children: List.generate(
+        mediaItem.length,
+        (index) => AudioSource.uri(
+            Uri.parse("${Api.baseUrl}/${mediaItem[index].extras}")),
+      ),
+    );
   }
 }
 
