@@ -79,7 +79,26 @@ class NewRelease extends GetView<GetXPlayerController> {
                       image: "${Api.baseUrl}/${list[index].thumbnail128}",
                       musicName: list[index].name ?? "",
                       artistName: "Artist Name",
-                      onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
+                      onTap: () {
+                        List<MediaItem> mediaItems = [];
+                        for (var element in list) {
+                          mediaItems.add(
+                            MediaItem(
+                              id: "${element.id}",
+                              title: element.name ?? "",
+                              displayTitle: element.name ?? "",
+                              artUri: Uri.parse(
+                                  "${Api.baseUrl}/${element.thumbnail128}"),
+                              extras: {
+                                'url': "${Api.baseUrl}/${element.songFile}"
+                              },
+                            ),
+                          );
+                        }
+                        controller.clearPlaylist();
+                        controller.add(mediaItems);
+                        Get.toNamed(AppRoutes.bottomPlayer);
+                      },
                     );
                   });
                 });

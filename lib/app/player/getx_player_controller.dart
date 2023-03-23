@@ -194,15 +194,8 @@ class GetXPlayerController extends GetxController {
   }
 
   Future<void> add(mediaItem) async {
-    // final songRepository = Get.find<GetXDemoPlaylist>();
-    // final song = await songRepository.fetchAnotherSong();
-    // final mediaItem = MediaItem(
-    //   id: song['id'] ?? '',
-    //   album: song['album'] ?? '',
-    //   title: song['title'] ?? '',
-    //   extras: {'url': song['url']},
-    // );
-    _audioHandler.addQueueItem(mediaItem);
+    _audioHandler.addQueueItems(mediaItem);
+    play();
   }
 
   Future<void> removeLastItemFromIndex() async {
