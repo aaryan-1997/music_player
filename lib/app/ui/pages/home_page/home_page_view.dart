@@ -76,7 +76,7 @@ class NewRelease extends GetView<GetXPlayerController> {
                   var list = controller.latestRelease;
                   return Obx(() {
                     return PlayerCard(
-                      image: list[index].thumbnail128.toString(),
+                      image: "${Api.baseUrl}/${list[index].thumbnail128}",
                       musicName: list[index].name ?? "",
                       artistName: "Artist Name",
                       onTap: () => Get.toNamed(AppRoutes.bottomPlayer),
@@ -167,7 +167,7 @@ class TrendingSongs extends GetView<GetXPlayerController> {
                   var list = controller.latestRelease;
                   return Obx(() {
                     return PlayerCard(
-                      image: list[index].thumbnail128.toString(),
+                      image: "${Api.baseUrl}/${list[index].thumbnail128}",
                       musicName: list[index].name ?? "",
                       artistName: "Artist Name",
                       onTap: () {
@@ -178,14 +178,16 @@ class TrendingSongs extends GetView<GetXPlayerController> {
                               id: "${element.id}",
                               title: element.name ?? "",
                               displayTitle: element.name ?? "",
-                              artUri: Uri.parse(element.thumbnail128 ?? ''),
+                              artUri: Uri.parse(
+                                  "${Api.baseUrl}/${element.thumbnail128}"),
                               extras: {
                                 'url': "${Api.baseUrl}/${element.songFile}"
                               },
                             ),
                           );
                         }
-                        controller.updatePlayList(mediaItems, index);
+                        controller.clearPlaylist();
+                        controller.add(mediaItems);
                         Get.toNamed(AppRoutes.bottomPlayer);
                       },
                     );
@@ -328,7 +330,7 @@ class PlayList extends GetView<GetXPlayerController> {
                   return Obx(() {
                     return PlayerCard(
                       image:
-                          "http://65.2.183.74//storage/7/conversions/62541b21309a5_20210110_121942_0000-mediumthumb.jpg",
+                          "http://65.2.183.74/storage/7/conversions/62541b21309a5_20210110_121942_0000-mediumthumb.jpg",
                       musicName: controller.playlists[index].name ?? "",
                       artistName: "Artist Name",
                       onTap: () => Get.toNamed(AppRoutes.bottomPlayer),

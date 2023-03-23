@@ -1,9 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:music_app/app/models/home_music_response.dart';
 
-import '../services/api.dart';
 import 'getx_audio_handler.dart';
 import 'getx_playlist_repository.dart';
 
@@ -48,12 +46,6 @@ class GetXPlayerController extends GetxController {
         playlists.value = result.data!.playlists ?? [];
       }
     }
-  }
-
-  void updatePlayList(List<MediaItem> mediaItems, int index) async {
-    GetXBaseAudioHandler getXBaseAudioHandler = GetXBaseAudioHandler();
-    getXBaseAudioHandler.player
-        .setAudioSource(_createAudioSource(mediaItems), initialIndex: index);
   }
 
   void _listenToChangesInPlaylist() {
@@ -213,10 +205,18 @@ class GetXPlayerController extends GetxController {
     _audioHandler.addQueueItem(mediaItem);
   }
 
-  void remove() {
+  Future<void> removeLastItemFromIndex() async {
     final lastIndex = _audioHandler.queue.value.length - 1;
     if (lastIndex < 0) return;
-    _audioHandler.removeQueueItemAt(lastIndex);
+    await _audioHandler.removeQueueItemAt(lastIndex);
+  }
+
+  Future<void> clearPlaylist() async {
+    final lastIndex = _audioHandler.queue.value.length - 1;
+
+    for (int i = 0; i <= lastIndex; i++) {
+      await removeLastItemFromIndex();
+    }
   }
 
   @override
@@ -228,16 +228,6 @@ class GetXPlayerController extends GetxController {
   void stop() {
     _audioHandler.stop();
     //playButtonNotifier.value = ButtonState.idle;
-  }
-
-  _createAudioSource(List<MediaItem> mediaItem) {
-    return ConcatenatingAudioSource(
-      children: List.generate(
-        mediaItem.length,
-        (index) => AudioSource.uri(
-            Uri.parse("${Api.baseUrl}/${mediaItem[index].extras}")),
-      ),
-    );
   }
 }
 
